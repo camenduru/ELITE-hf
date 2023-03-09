@@ -57,7 +57,7 @@ def create_demo():
                         minimum=1,
                         maximum=100,
                         step=1,
-                        value=20,
+                        value=100,
                         info=
                         'In the paper, the number of steps is set to 100, but in this demo the default value is 20 to reduce inference time.'
                     )
