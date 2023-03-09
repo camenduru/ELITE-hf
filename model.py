@@ -29,7 +29,7 @@ snapshot_download('ELITE-library/ELITE',
 sys.path.insert(0, submodule_dir.as_posix())
 
 from train_local import (Mapper, MapperLocal, inj_forward_crossattention,
-                         inj_forward_text, th2image)
+                         inj_forward_text, th2image, value_local_list)
 
 
 def get_tensor_clip(normalize=True, toTensor=True):
@@ -335,6 +335,7 @@ class Model:
                                             placeholder_idx.detach(),
                                             'LAMBDA': lambda_
                                         }).sample
+            value_local_list.clear()
             latent_model_input = self.scheduler.scale_model_input(latents, t)
 
             noise_pred_uncond = self.unet(latent_model_input,
@@ -343,6 +344,7 @@ class Model:
                                               'CONTEXT_TENSOR':
                                               uncond_embeddings,
                                           }).sample
+            value_local_list.clear()
             noise_pred = noise_pred_uncond + guidance_scale * (
                 noise_pred_text - noise_pred_uncond)
 
