@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import pathlib
 import random
 import sys
@@ -15,17 +14,11 @@ import torch.nn.functional as F
 import torchvision.transforms as T
 import tqdm.auto
 from diffusers import AutoencoderKL, LMSDiscreteScheduler, UNet2DConditionModel
-from huggingface_hub import hf_hub_download, snapshot_download
+from huggingface_hub import hf_hub_download
 from transformers import CLIPTextModel, CLIPTokenizer, CLIPVisionModel
-
-HF_TOKEN = os.getenv('HF_TOKEN')
 
 repo_dir = pathlib.Path(__file__).parent
 submodule_dir = repo_dir / 'ELITE'
-snapshot_download('ELITE-library/ELITE',
-                  repo_type='model',
-                  local_dir=submodule_dir.as_posix(),
-                  token=HF_TOKEN)
 sys.path.insert(0, submodule_dir.as_posix())
 
 from train_local import (Mapper, MapperLocal, inj_forward_crossattention,
@@ -64,13 +57,11 @@ class Model:
         global_mapper_path = hf_hub_download('ELITE-library/ELITE',
                                              'global_mapper.pt',
                                              subfolder='checkpoints',
-                                             repo_type='model',
-                                             token=HF_TOKEN)
+                                             repo_type='model')
         local_mapper_path = hf_hub_download('ELITE-library/ELITE',
                                             'local_mapper.pt',
                                             subfolder='checkpoints',
-                                            repo_type='model',
-                                            token=HF_TOKEN)
+                                            repo_type='model')
         return global_mapper_path, local_mapper_path
 
     def load_model(
@@ -139,10 +130,7 @@ class Model:
                 mapper_local.add_module(f'{_name.replace(".", "_")}_to_k',
                                         to_k_local)
 
-        #global_mapper_path, local_mapper_path = self.download_mappers()
-        global_mapper_path = submodule_dir / 'checkpoints/global_mapper.pt'
-        local_mapper_path = submodule_dir / 'checkpoints/local_mapper.pt'
-
+        global_mapper_path, local_mapper_path = self.download_mappers()
         mapper.load_state_dict(
             torch.load(global_mapper_path, map_location='cpu'))
         mapper.half()

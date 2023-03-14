@@ -1,0 +1,3 @@
+[submodule "ELITE"]
+	path = ELITE
+	url = https://huggingface.co/ELITE-library/ELITE
