@@ -30,7 +30,7 @@ def create_demo():
                 lambda_ = gr.Slider(
                     label='Lambda',
                     minimum=0,
-                    maximum=1,
+                    maximum=1.5,
                     step=0.1,
                     value=0.6,
                     info=
