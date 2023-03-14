@@ -12,20 +12,31 @@ repo_dir = pathlib.Path(__file__).parent
 
 
 def create_demo():
-    DESCRIPTION = '# [ELITE](https://github.com/csyxwei/ELITE)'
+
+
+    TITLE = '# [ELITE Demo](https://github.com/csyxwei/ELITE)'
+    
+    USAGE='''To run the demo, you should:   
+    1. Upload your image.   
+    2. **Draw a mask on the object part.**   
+    3. Input proper text prompts, such as "A photo of S" or "A S wearing sunglasses", where "S" denotes your customized concept.   
+    4. Click the Run button. You can also adjust the hyperparameters to improve the results.
+    '''
 
     model = Model()
 
     with gr.Blocks(css=repo_dir / 'style.css') as demo:
-        gr.Markdown(DESCRIPTION)
+        gr.Markdown(TITLE)
+        gr.Markdown(USAGE)
         with gr.Row():
             with gr.Column():
                 with gr.Box():
                     image = gr.Image(label='Input', tool='sketch', type='pil')
-                    gr.Markdown('Draw a mask on your object.')
+                    # gr.Markdown('Draw a mask on your object.')
+                    gr.Markdown(USAGE)
                 prompt = gr.Text(
                     label='Prompt',
-                    placeholder='e.g. "A photo of S", "S wearing sunglasses"',
+                    placeholder='e.g. "A photo of S", "A S wearing sunglasses"',
                     info='Use "S" for your concept.')
                 lambda_ = gr.Slider(
                     label='Lambda',
@@ -57,7 +68,7 @@ def create_demo():
                         minimum=1,
                         maximum=100,
                         step=1,
-                        value=100,
+                        value=300,
                         info=
                         'In the paper, the number of steps is set to 100, but in this demo the default value is 20 to reduce inference time.'
                     )
