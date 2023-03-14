@@ -33,7 +33,7 @@ def create_demo():
                 with gr.Box():
                     image = gr.Image(label='Input', tool='sketch', type='pil')
                     # gr.Markdown('Draw a mask on your object.')
-                    gr.Markdown(USAGE)
+                    gr.Markdown('Upload your image and **draw a mask on the object part**')
                 prompt = gr.Text(
                     label='Prompt',
                     placeholder='e.g. "A photo of S", "A S wearing sunglasses"',
